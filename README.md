@@ -1,5 +1,7 @@
 # Weather App
 
+ma clé : 4e7b5964d47fcbbd22dfcda7769183cc
+
 ## Components folder
 
 Voici la structure du projet. Un peu plus tard, nous allons ajouter d'autres components dans `Weather`.
@@ -25,22 +27,22 @@ Pour l'instant nous allons afficher des conditions météo pour Paris. Mais dans
 
 ```javascript
 /* src/App.js */
-import React, { useState } from "react"
-import Weather from "./components/Weather"
-import CityForm from "./components/CityForm"
+import React, { useState } from "react";
+import Weather from "./components/Weather";
+import CityForm from "./components/CityForm";
 
 function App() {
-  const [city, setCity] = useState("Paris")
+  const [city, setCity] = useState("Paris");
   return (
     <div className="container my-4">
       <h1 className="display-3 text-center mb-4">Météo Actuelle</h1>
       <Weather city={city} />
       <CityForm />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 **Attention** Ici, nous mettons `import Weather from "./components/Weather"`. Si `./components/Weather.js` n'est pas trouvé, `./components/Weather/index.js` va être cherché.
@@ -51,17 +53,17 @@ Voici notre component `Weather` de départ
 
 ```javascript
 // src/components/Weather.js
-import React from "react"
+import React from "react";
 
 const Weather = ({ city }) => {
   return (
     <section className="text-center mb-5">
       <h2 className="mb-4">Conditions météo à {city}</h2>
     </section>
-  )
-}
+  );
+};
 
-export default Weather
+export default Weather;
 ```
 
 Nous allons utiliser `useEffect` afin de "fetch" les données concernant la météo actuelle dans notre `city` (initiallement Paris)
@@ -69,44 +71,44 @@ Nous allons utiliser `useEffect` afin de "fetch" les données concernant la mét
 Voici l'url que nous allons utiliser :
 
 ```javascript
-const API_KEY = "votrekeyici"
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`
+const API_KEY = "votrekeyici";
+const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
 ```
 
 Nous mettons dans notre component :
 
 ```javascript
 // src/components/Weather.js
-import React, { useEffect } from "react"
-const API_KEY = "..."
+import React, { useEffect } from "react";
+const API_KEY = "...";
 
 const Weather = ({ city }) => {
   useEffect(() => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
 
     fetch(url)
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         }
-        throw new Error("météo untrouvable")
+        throw new Error("météo untrouvable");
       })
       .then((data) => {
-        console.log(data)
+        console.log(data);
       })
       .catch((error) => {
-        alert(error.message)
-      })
-  }, [city])
+        alert(error.message);
+      });
+  }, [city]);
 
   return (
     <section className="text-center">
       <h2 className="mb-4">Conditions météo à {city}</h2>
     </section>
-  )
-}
+  );
+};
 
-export default Weather
+export default Weather;
 ```
 
 Quelle informations de `data` allons nous utiliser ? Nous pouvons opter pour :
@@ -152,45 +154,45 @@ Notre component `Weather` devient
 ```javascript
 // src/components/Weather/index.js
 
-import React, { useState, useEffect } from "react"
-import Icon from "./Icon"
-import Description from "./Description"
-import Temperature from "./Temperature"
-import Humidity from "./Humidity"
+import React, { useState, useEffect } from "react";
+import Icon from "./Icon";
+import Description from "./Description";
+import Temperature from "./Temperature";
+import Humidity from "./Humidity";
 
-const API_KEY = ".."
+const API_KEY = "..";
 
 const Weather = ({ city }) => {
-  const [conditions, setConditions] = useState({})
-  const [description, setDescription] = useState("")
-  const [iconID, setIconID] = useState("")
-  const [location, setLocation] = useState("")
+  const [conditions, setConditions] = useState({});
+  const [description, setDescription] = useState("");
+  const [iconID, setIconID] = useState("");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
 
     fetch(url)
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         }
-        throw new Error("météo untrouvable")
+        throw new Error("météo untrouvable");
       })
       .then((data) => {
-        setLocation(`${data.name}, ${data.sys.country}`)
+        setLocation(`${data.name}, ${data.sys.country}`);
         setConditions({
           feelsLike: Math.round(data.main.feels_like),
           mainTemp: Math.round(data.main.temp),
           humidity: data.main.humidity,
-        })
-        setDescription(data.weather[0].description)
-        setIconID(data.weather[0].icon)
+        });
+        setDescription(data.weather[0].description);
+        setIconID(data.weather[0].icon);
       })
       .catch((error) => {
-        setLocation("")
-        alert(error.message)
-      })
-  }, [city])
+        setLocation("");
+        alert(error.message);
+      });
+  }, [city]);
 
   return (
     !!location && (
@@ -202,47 +204,47 @@ const Weather = ({ city }) => {
         <Humidity humidity={humidity} />
       </section>
     )
-  )
-}
+  );
+};
 
-export default Weather
+export default Weather;
 ```
 
 ## Description
 
 ```javascript
 // src/components/Weather/Description.js
-import React from "react"
+import React from "react";
 
 const Description = ({ description }) => {
-  return <p>{description}</p>
-}
+  return <p>{description}</p>;
+};
 
-export default Description
+export default Description;
 ```
 
 ## Temperature
 
 ```javascript
 // src/components/Weather/Temperature.js
-import React from "react"
+import React from "react";
 
 const Temperature = ({ mainTemp, feelsLike }) => {
   return (
     <p>
       <b>température</b> {mainTemp}&deg;C - ressentie {feelsLike}&deg;C
     </p>
-  )
-}
+  );
+};
 
-export default Temperature
+export default Temperature;
 ```
 
 ## Icon
 
 ```javascript
 // src/components/Weather/Temperature.js
-import React from "react"
+import React from "react";
 
 const Icon = ({ iconID }) => {
   return (
@@ -254,18 +256,18 @@ const Icon = ({ iconID }) => {
         height="100"
       />
     )
-  )
-}
+  );
+};
 
-export default Icon
+export default Icon;
 ```
 
 ## Humidity
 
 ```javascript
 // src/components/Weather/Humidity.js
-import React from "react"
-import "./humidity.css"
+import React from "react";
+import "./humidity.css";
 
 const Humidity = ({ humidity }) => {
   return (
@@ -278,10 +280,10 @@ const Humidity = ({ humidity }) => {
         style={{ backgroundSize: `${humidity}% auto` }}
       />
     </>
-  )
-}
+  );
+};
 
-export default Humidity
+export default Humidity;
 ```
 
 avec
@@ -310,14 +312,14 @@ avec
 Nous allons maintenant mettre à jour `city`, suite à event "submit" de notre formulaire.
 
 ```javascript
-import React from "react"
+import React from "react";
 
 const CityForm = ({ setCity }) => {
   const submitHandler = (e) => {
-    e.preventDefault()
-    setCity(e.target.elements.city.value)
-    e.target.reset()
-  }
+    e.preventDefault();
+    setCity(e.target.elements.city.value);
+    e.target.reset();
+  };
   return (
     <form onSubmit={submitHandler}>
       <div className="input-group mb-2">
@@ -327,10 +329,10 @@ const CityForm = ({ setCity }) => {
         <input className="form-control" id="city" required />
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default CityForm
+export default CityForm;
 ```
 
 ## (optionnel) useWeather custom hook
@@ -344,66 +346,66 @@ touch src/hooks/useWeather.js
 
 ```javascript
 // src/hooks/useWeather.js
-import { useState, useEffect } from "react"
-const API_KEY = ".."
+import { useState, useEffect } from "react";
+const API_KEY = "..";
 
 const useWeather = (city) => {
-  const [conditions, setConditions] = useState({})
-  const [description, setDescription] = useState("")
-  const [iconID, setIconID] = useState("")
-  const [location, setLocation] = useState("")
+  const [conditions, setConditions] = useState({});
+  const [description, setDescription] = useState("");
+  const [iconID, setIconID] = useState("");
+  const [location, setLocation] = useState("");
 
-  const API_KEY = ".."
+  const API_KEY = "..";
 
   useEffect(() => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
 
     fetch(url)
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         }
-        throw new Error("météo untrouvable")
+        throw new Error("météo untrouvable");
       })
       .then((data) => {
-        setLocation(`${data.name}, ${data.sys.country}`)
+        setLocation(`${data.name}, ${data.sys.country}`);
         setConditions({
           feelsLike: Math.round(data.main.feels_like),
           mainTemp: Math.round(data.main.temp),
           humidity: data.main.humidity,
-        })
-        setDescription(data.weather[0].description)
-        setIconID(data.weather[0].icon)
+        });
+        setDescription(data.weather[0].description);
+        setIconID(data.weather[0].icon);
       })
       .catch((error) => {
-        setLocation("")
-        alert(error.message)
-      })
-  }, [city])
+        setLocation("");
+        alert(error.message);
+      });
+  }, [city]);
   return {
     conditions,
     description,
     iconID,
     location,
-  }
-}
+  };
+};
 
-export default useWeather
+export default useWeather;
 ```
 
 et finalement dans `Weather`
 
 ```javascript
 // src/components/Weather/index.js
-import React, { useState, useEffect } from "react"
-import Icon from "./Icon"
-import Description from "./Description"
-import Temperature from "./Temperature"
-import Humidity from "./Humidity"
-import useWeather from "../hooks/useWeather"
+import React, { useState, useEffect } from "react";
+import Icon from "./Icon";
+import Description from "./Description";
+import Temperature from "./Temperature";
+import Humidity from "./Humidity";
+import useWeather from "../hooks/useWeather";
 
 const Weather = ({ city }) => {
-  const { conditions, description, iconID, location } = useWeather(city)
+  const { conditions, description, iconID, location } = useWeather(city);
 
   return (
     !!location && (
@@ -415,8 +417,8 @@ const Weather = ({ city }) => {
         <Humidity humidity={humidity} />
       </section>
     )
-  )
-}
+  );
+};
 
-export default Weather
+export default Weather;
 ```
