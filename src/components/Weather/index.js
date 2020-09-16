@@ -5,15 +5,14 @@ import Icon from "./Icon";
 import Temperature from "./Temperature";
 
 const Weather = ({ city }) => {
-  const API_KEY = "4e7b5964d47fcbbd22dfcda7769183cc";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
-
   const [conditions, setConditions] = useState({});
   const [description, setDescription] = useState("");
   const [iconId, setIconId] = useState("");
   const [location, setLocation] = useState("");
 
   useEffect(() => {
+    const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&&lang=fr`;
     fetch(url)
       .then((response) => {
         if (response.ok) {
