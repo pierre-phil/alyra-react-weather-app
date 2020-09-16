@@ -38,16 +38,18 @@ const Weather = ({ city }) => {
   }, [city]);
 
   return (
-    <section className="text-center mb-5">
-      <Icon iconId={iconId} />
-      <h2 className="mb-4">Conditions météo à {city}</h2>
-      <Description description={description} />
-      <Temperature
-        mainTemp={conditions.mainTemp}
-        feelsLike={conditions.feelsLike}
-      />
-      <Humidity humidity={conditions.humidity} />
-    </section>
+    !!location && (
+      <section className="text-center mb-5">
+        <Icon iconId={iconId} />
+        <h2 className="mb-4">Conditions météo à {location}</h2>
+        <Description description={description} />
+        <Temperature
+          mainTemp={conditions.mainTemp}
+          feelsLike={conditions.feelsLike}
+        />
+        <Humidity humidity={conditions.humidity} />
+      </section>
+    )
   );
 };
 
