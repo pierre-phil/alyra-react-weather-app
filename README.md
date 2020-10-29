@@ -1,7 +1,5 @@
 # Weather App
 
-ma clé : 4e7b5964d47fcbbd22dfcda7769183cc
-
 ## Components folder
 
 Voici la structure du projet. Un peu plus tard, nous allons ajouter d'autres components dans `Weather`.
